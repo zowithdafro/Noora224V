@@ -8,79 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <style>
-      /* Updated styling for chat layout */
-      .chat-container {
-        max-height: 500px;
-        overflow-y: auto;
-        padding: 10px;
-        margin-bottom: 20px;
-      }
-
-      .chat-message {
-        margin: 15px 0;
-        display: flex;
-        align-items: flex-start;
-      }
-
-      .noora-message, .user-message {
-        max-width: 80%;
-        padding: 8px 12px;
-        border-radius: 10px;
-        font-size: 16px;
-        line-height: 1.5;
-      }
-
-      .noora-message {
-        background-color: #f5a623; /* Same yellow as the button */
-        color: #333;
-        margin-bottom: 10px;
-      }
-
-      .user-message {
-        background-color: #000000; /* Black for user */
-        color: white;
-        margin-left: auto;
-        margin-bottom: 10px;
-      }
-
-      .chat-image {
-        width: 300px;
-        height: auto;
-        border-radius: 8px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-
-      .time-taken {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-
-      .reply-section {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-      }
-
-      .reply-input {
-        flex: 1;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 20px;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-      }
-
-      .submit-btn {
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-      }
-    </style>
+    <link rel="icon" type="image/png" href="static/assets/logo-icon.PNG" />
   </head>
   <body>
     <div class="container">
@@ -88,20 +16,45 @@
       <header>
         <!-- App Branding -->
         <div class="header-left">
-          <img src="static/assets/lamp.PNG" alt="Lamp Icon" class="flame-icon" />
+          <img
+            src="static/assets/lamp.PNG"
+            alt="Lamp Icon"
+            class="flame-icon"
+          />
           <div class="noora-text">
-            <div class="noora-title">NOORA</div>
+            <div class="noora-title">
+              <span>NOORA</span><span class="version"> 2.0</span>
+            </div>
             <div class="noora-subtitle">
-              Stanford University Open Virtual Assistant Lab
+              <img
+                src="static/assets/stanford.png"
+                alt="Stanford Logo"
+                class="stanford-logo"
+              />
+              Open Virtual Assistant Lab
             </div>
           </div>
         </div>
         <!-- Navigation Controls -->
         <div class="header-right">
-          <button class="facial-expressions-btn">
-            Facial Expressions
-            <i class="fa-solid fa-angle-down"></i>
-          </button>
+          <div class="module-dropdown">
+            <button class="facial-expressions-btn">
+              Facial Expressions
+              <i class="fa-solid fa-angle-down"></i>
+            </button>
+            <div class="module-list">
+              <div class="module-item">Empathy</div>
+              <div class="module-item">Talking Right Amount</div>
+              <div class="module-item">Asking Relevant Questions</div>
+              <div class="module-item">Starting a Conversation</div>
+              <div class="module-item">Compliments</div>
+              <div class="module-item">Tactful Responses</div>
+              <div class="module-item">Getting to Know You</div>
+              <div class="module-item">Being Asked to Give Advice</div>
+              <div class="module-item">Healthy Criticism</div>
+              <div class="module-item">Harmful Criticism</div>
+            </div>
+          </div>
           <button class="profile-button">
             <i class="fa-solid fa-user"></i>
             Mihir
@@ -126,10 +79,20 @@
               <span>Progress</span>
             </div>
             <div class="progress-circles">
-              <div class="circle filled"></div>
-              <div class="circle filled"></div>
-              <div class="circle filled"></div>
-              <div class="circle filled"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
               <div class="circle"></div>
               <div class="circle"></div>
               <div class="circle"></div>
@@ -142,13 +105,15 @@
           <div class="counts-container">
             <div class="count-item">
               <div class="count-number">
-                <span class="big-number" id="current-scenario">0</span><span class="small-number">/20</span>
+                <span class="big-number" id="current-scenario">0</span
+                ><span class="small-number">/20</span>
               </div>
               <div class="count-label">scenarios</div>
             </div>
             <div class="count-item">
               <div class="count-number">
-                <span class="big-number" id="correct-count">0</span><span class="small-number">/20</span>
+                <span class="big-number" id="correct-count">0</span
+                ><span class="small-number">/20</span>
               </div>
               <div class="count-label">correct</div>
             </div>
@@ -160,7 +125,11 @@
           <!-- Chat Container -->
           <div class="chat-container" id="chat-container">
             <div class="chat-message noora-message">
-              <p>Hi there, I'm Noora! Let's practice responding to people in the following 20 situations. I'll show you a facial expression, and you respond with what you would say.</p>
+              <p>
+                Hi there, I'm Noora! Let's practice responding to people in the
+                following 20 situations. I'll show you a facial expression, and
+                you respond with what you would say.
+              </p>
             </div>
           </div>
           <!-- Input Area -->
@@ -171,7 +140,7 @@
               class="reply-input"
               id="reply-input"
             />
-            <button id="submit-btn"  class="scroll-top">
+            <button id="submit-btn" class="scroll-top">
               <i class="fa-solid fa-circle-arrow-up"></i>
             </button>
           </div>
@@ -180,12 +149,12 @@
     </div>
 
     <script>
-      const replyInput = document.getElementById('reply-input');
-      const chatContainer = document.getElementById('chat-container');
-      const submitBtn = document.getElementById('submit-btn');
-      const timerSpan = document.getElementById('timer');
-      const currentScenarioSpan = document.getElementById('current-scenario');
-      const correctCountSpan = document.getElementById('correct-count');
+      const replyInput = document.getElementById("reply-input");
+      const chatContainer = document.getElementById("chat-container");
+      const submitBtn = document.getElementById("submit-btn");
+      const timerSpan = document.getElementById("timer");
+      const currentScenarioSpan = document.getElementById("current-scenario");
+      const correctCountSpan = document.getElementById("correct-count");
 
       let timerInterval;
       let currentScenario = 0;
@@ -198,19 +167,32 @@
           seconds++;
           const minutes = Math.floor(seconds / 60);
           const remainingSeconds = seconds % 60;
-          timerSpan.innerText = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+          timerSpan.innerText = `${String(minutes).padStart(2, "0")}:${String(
+            remainingSeconds
+          ).padStart(2, "0")}`;
         }, 1000);
       };
 
       // Function to generate the next facial expression
-      const generateExpression = async (userReply = '') => {
+      const generateExpression = async (userReply = "") => {
         if (userReply) {
+          // Only increment scenario count after user replies
+          currentScenario++;
+          currentScenarioSpan.innerText = currentScenario;
+
           // Display user's reply as a chat message
-          const userMessageDiv = document.createElement('div');
-          userMessageDiv.classList.add('chat-message', 'user-message');
+          const userMessageDiv = document.createElement("div");
+          userMessageDiv.classList.add("chat-message", "user-message");
           userMessageDiv.innerText = userReply;
           chatContainer.appendChild(userMessageDiv);
-          chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom after adding user's message
+
+          // Determine if answer is correct and update progress
+          const isCorrect = Math.random() < 0.5;
+          if (isCorrect) {
+            correctCount++;
+            correctCountSpan.innerText = correctCount;
+          }
+          updateProgressCircles(isCorrect);
         }
 
         // Disable the input and submit button temporarily to avoid multiple submissions at the same time
@@ -218,33 +200,23 @@
         submitBtn.disabled = true;
 
         // Show a loading message while waiting for a response
-        const loadingMessageDiv = document.createElement('div');
-        loadingMessageDiv.classList.add('chat-message', 'noora-message');
+        const loadingMessageDiv = document.createElement("div");
+        loadingMessageDiv.classList.add("chat-message", "noora-message");
         loadingMessageDiv.innerText = "Generating... Please wait.";
         chatContainer.appendChild(loadingMessageDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom to show loading message
 
         try {
           // Fetch the generated data from the backend
-          const response = await fetch('/generate');
+          const response = await fetch("/generate");
           const data = await response.json();
 
           // Remove the loading message
           loadingMessageDiv.remove();
 
-          // Increment the current scenario count
-          currentScenario++;
-          currentScenarioSpan.innerText = currentScenario;
-
-          // Randomly determine if the answer is correct
-          if (Math.random() < 0.5) {
-            correctCount++;
-            correctCountSpan.innerText = correctCount;
-          }
-
           // Display the ambiguous statement
-          const nooraMessageDiv = document.createElement('div');
-          nooraMessageDiv.classList.add('chat-message', 'noora-message');
+          const nooraMessageDiv = document.createElement("div");
+          nooraMessageDiv.classList.add("chat-message", "noora-message");
           nooraMessageDiv.innerHTML = `<em>"${data.statement}"</em>`;
 
           // Append Noora's response to the chat
@@ -253,15 +225,18 @@
 
           // Display the generated facial expression (image)
           if (data.image_url) {
-            const imageElement = document.createElement('img');
+            const imageElement = document.createElement("img");
             imageElement.src = data.image_url;
-            imageElement.alt = 'Facial Expression';
-            imageElement.classList.add('chat-image');
+            imageElement.alt = "Facial Expression";
+            imageElement.classList.add("chat-image");
             chatContainer.appendChild(imageElement);
 
             // Scroll to the most recent image after it is appended
             setTimeout(() => {
-              imageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              imageElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
             }, 100);
           }
         } catch (error) {
@@ -273,28 +248,76 @@
         }
       };
 
+      // Add this function after the other function declarations
+      const updateProgressCircles = (isCorrect) => {
+        const circles = document.querySelectorAll(".progress-circles .circle");
+        const currentIndex = currentScenario - 1;
+
+        if (currentIndex >= 0 && currentIndex < circles.length) {
+          const currentCircle = circles[currentIndex];
+          currentCircle.classList.add("filled");
+
+          if (isCorrect) {
+            currentCircle.classList.add("correct");
+            currentCircle.classList.remove("incorrect");
+          } else {
+            currentCircle.classList.add("incorrect");
+            currentCircle.classList.remove("correct");
+          }
+        }
+      };
+
       // Event listener for the reply input (when user presses "Enter")
-      replyInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' && replyInput.value.trim() !== '') {
+      replyInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && replyInput.value.trim() !== "") {
           const userReply = replyInput.value.trim();
-          replyInput.value = '';
+          replyInput.value = "";
           generateExpression(userReply); // Generate the next facial expression
         }
       });
 
       // Event listener for the submit button
-      submitBtn.addEventListener('click', () => {
-        if (replyInput.value.trim() !== '') {
+      submitBtn.addEventListener("click", () => {
+        if (replyInput.value.trim() !== "") {
           const userReply = replyInput.value.trim();
-          replyInput.value = '';
+          replyInput.value = "";
           generateExpression(userReply); // Generate the next facial expression
         }
       });
 
       // Load the first facial expression when the page loads
-      window.addEventListener('load', () => {
+      window.addEventListener("load", () => {
         startTimer(); // Start the timer from 0
         generateExpression(); // Load the first facial expression and statement
+      });
+
+      // Add this JavaScript to your existing script
+      document.addEventListener("DOMContentLoaded", () => {
+        const button = document.querySelector(".facial-expressions-btn");
+        const dropdown = button.closest(".module-dropdown");
+
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
+          dropdown.classList.toggle("active");
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove("active");
+          }
+        });
+
+        // Hover effects for module items
+        document.querySelectorAll(".module-item").forEach((item) => {
+          item.addEventListener("mouseenter", () => {
+            item.style.backgroundColor = "#ffb224";
+          });
+
+          item.addEventListener("mouseleave", () => {
+            item.style.backgroundColor = "transparent";
+          });
+        });
       });
     </script>
   </body>

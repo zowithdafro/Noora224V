@@ -84,6 +84,14 @@ header {
 .facial-expressions-btn {
   background-color: #ffa500;
   color: #000000;
+  position: relative;
+  z-index: 1001;
+  border-radius: 30px;
+  transition: border-radius 0.3s ease;
+}
+
+.module-dropdown.active .facial-expressions-btn {
+  border-radius: 30px 30px 0 0;
 }
 
 .profile-button {
@@ -168,6 +176,14 @@ main {
 .circle.filled {
   background-color: #000000;
   border: none;
+}
+
+.circle.filled.correct {
+  background-color: #2ecc71; /* green */
+}
+
+.circle.filled.incorrect {
+  background-color: #e74c3c; /* dark red */
 }
 
 .counts-container {
@@ -318,4 +334,172 @@ main {
 .scroll-top i {
   font-size: 35px;
   color: #000000;
+}
+/* Updated styling for chat layout */
+.chat-container {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.chat-message {
+  margin: 15px 0;
+  display: flex;
+  align-items: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-message:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.noora-message,
+.user-message {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.noora-message {
+  background-color: #f5a623; /* Same yellow as the button */
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.user-message {
+  background-color: #000000; /* Black for user */
+  color: white;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+
+.chat-image {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.chat-image:hover {
+  transform: scale(1.05);
+}
+
+.time-taken {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.reply-section {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.reply-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.submit-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.version {
+  font-size: 18px;
+  color: #808080;
+}
+
+.stanford-logo {
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.module-dropdown {
+  position: relative;
+}
+
+/* Update the module-list styles in styles.css */
+.module-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffa500;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  overflow-y: scroll;
+  max-height: 0;
+  transform-origin: top;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.module-dropdown.active .module-list {
+  max-height: 400px;
+  opacity: 1;
+  pointer-events: all;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.module-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.module-item:hover {
+  background-color: #ffb224; /* Slightly lighter than button color */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.element-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.module-list::-webkit-scrollbar {
+  display: none;
+}
+
+.facial-expressions-btn i {
+  transition: transform 0.3s ease;
+}
+
+.module-dropdown.active .facial-expressions-btn i {
+  transform: rotate(180deg);
 }
