@@ -185,48 +185,25 @@
       };
 
       // Function to generate the next facial expression
-      const generateExpression = async (userReply = "") => {
-        if (userReply) {
-          // Only increment scenario count after user replies
-          currentScenario++;
-          currentScenarioSpan.innerText = currentScenario;
-
-          // Display user's reply as a chat message
-          const userMessageDiv = document.createElement("div");
-          userMessageDiv.classList.add("chat-message", "user-message");
-          userMessageDiv.innerText = userReply;
-          chatContainer.appendChild(userMessageDiv);
-          scrollToBottom(); // Scroll after user message
-
-          // Determine if answer is correct and update progress
-          const isCorrect = Math.random() < 0.5;
-          if (isCorrect) {
-            correctCount++;
-            correctCountSpan.innerText = correctCount;
-          }
-          updateProgressCircles(isCorrect);
-        }
-
-        // Disable the input and submit button temporarily to avoid multiple submissions at the same time
+      const generateExpression = async () => {
         replyInput.disabled = true;
         submitBtn.disabled = true;
 
-        // Show a loading message while waiting for a response
         const loadingMessageDiv = document.createElement("div");
         loadingMessageDiv.classList.add("chat-message", "noora-message");
         loadingMessageDiv.innerText = "Generating... Please wait.";
         chatContainer.appendChild(loadingMessageDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom to show loading message
+        scrollToBottom();
 
         try {
-          // Fetch the generated data from the backend
+          // Fetch generated data from the backend
           const response = await fetch("/generate");
           const data = await response.json();
 
-          // Remove the loading message
+          // Remove loading message
           loadingMessageDiv.remove();
 
-          // Display the ambiguous statement and image in a single container
+          // Display statement and image
           const expressionContainer = document.createElement("div");
           expressionContainer.classList.add("expression-container");
 
@@ -243,57 +220,136 @@
           statementDiv.innerHTML = `<em>"${data.statement}"</em>`;
           expressionContainer.appendChild(statementDiv);
 
-          // Create a wrapper for the facial expression
           const facialExpressionDiv = document.createElement("div");
           facialExpressionDiv.classList.add("facial-expression");
           facialExpressionDiv.appendChild(expressionContainer);
 
-          // Append to chat container
           chatContainer.appendChild(facialExpressionDiv);
-          scrollToBottom(); // Scroll after Noora's response
+          scrollToBottom();
+
+          // Store the current statement, emotion, and intensity for evaluation purposes
+          window.currentExpression = {
+            statement: data.statement,
+            emotion: data.emotion,
+            intensity: data.intensity,
+          };
         } catch (error) {
-          loadingMessageDiv.innerText = "An error occurred. Please try again!";
         } finally {
-          // Re-enable the input and submit button after the generation is done
           replyInput.disabled = false;
           submitBtn.disabled = false;
         }
       };
+        // Function to update progress circles
+        const updateProgressCircles = (isCorrect) => {
+          const circles = document.querySelectorAll(".progress-circles .circle");
+          const currentIndex = currentScenario - 1; // Use currentScenario to get the correct circle
 
-      // Add this function after the other function declarations
-      const updateProgressCircles = (isCorrect) => {
-        const circles = document.querySelectorAll(".progress-circles .circle");
-        const currentIndex = currentScenario - 1;
+          if (currentIndex >= 0 && currentIndex < circles.length) {
+            const currentCircle = circles[currentIndex];
+            
+            // Remove any previous styles to ensure the circle is updated correctly
+            currentCircle.classList.remove("correct", "incorrect");
 
-        if (currentIndex >= 0 && currentIndex < circles.length) {
-          const currentCircle = circles[currentIndex];
-          currentCircle.classList.add("filled");
-
-          if (isCorrect) {
-            currentCircle.classList.add("correct");
-            currentCircle.classList.remove("incorrect");
-          } else {
-            currentCircle.classList.add("incorrect");
-            currentCircle.classList.remove("correct");
+            if (isCorrect) {
+              currentCircle.classList.add("correct");
+              currentCircle.style.backgroundColor = "#00cc66"; // Green for correct responses
+            } else {
+              currentCircle.classList.add("incorrect");
+              currentCircle.style.backgroundColor = "#ff3333"; // Red for incorrect responses
+            }
           }
+        };
+      const evaluateUserResponse = async (userReply) => {
+        if (!window.currentExpression) return;
+
+        const { statement, emotion, intensity } = window.currentExpression;
+
+        // Create a loading message for evaluation
+        const loadingMessageDiv = document.createElement("div");
+        loadingMessageDiv.classList.add("chat-message", "noora-message");
+        loadingMessageDiv.innerText = "Evaluating your response... Please wait.";
+        chatContainer.appendChild(loadingMessageDiv);
+        scrollToBottom();
+
+        try {
+          const response = await fetch("/evaluate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_reply: userReply,
+              statement,
+              emotion,
+              intensity,
+            }),
+          });
+
+          const data = await response.json();
+
+          // Check if the response is valid
+          if (data && data.evaluation && data.feedback) {
+            // Remove the loading message
+            loadingMessageDiv.remove();
+
+            // Display evaluation result in a format similar to the facial expression and statement
+            const evaluationContainer = document.createElement("div");
+            evaluationContainer.classList.add("expression-container");
+
+            // Add feedback message as a text element similar to the statement
+            const evaluationStatementDiv = document.createElement("div");
+            evaluationStatementDiv.classList.add("expression-statement");
+            evaluationStatementDiv.innerHTML = `<em>${data.evaluation}: ${data.feedback}</em>`;
+            evaluationContainer.appendChild(evaluationStatementDiv);
+
+            // Create a wrapper for the evaluation
+            const evaluationDiv = document.createElement("div");
+            evaluationDiv.classList.add("facial-expression"); // Reuse styling for consistency
+            evaluationDiv.appendChild(evaluationContainer);
+
+            chatContainer.appendChild(evaluationDiv);
+            scrollToBottom();
+
+            // Update progress circles
+            const isCorrect = data.evaluation.toLowerCase() === "correct";
+            if (isCorrect) {
+              correctCount++;
+              correctCountSpan.innerText = correctCount;
+            }
+            updateProgressCircles(isCorrect);
+          } else {
+            // If the response is not in the expected format
+            throw new Error("Invalid response format received from evaluation.");
+          }
+        } catch (error) {
+          // Remove the loading message
+          loadingMessageDiv.remove();
+
+          scrollToBottom();
+        } finally {
+          // Generate the next facial expression after evaluation feedback is shown
+          generateExpression();
         }
       };
 
-      // Event listener for the reply input (when user presses "Enter")
-      replyInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" && replyInput.value.trim() !== "") {
-          const userReply = replyInput.value.trim();
-          replyInput.value = "";
-          generateExpression(userReply); // Generate the next facial expression
-        }
-      });
 
       // Event listener for the submit button
       submitBtn.addEventListener("click", () => {
         if (replyInput.value.trim() !== "") {
           const userReply = replyInput.value.trim();
           replyInput.value = "";
-          generateExpression(userReply); // Generate the next facial expression
+          currentScenario++;
+          currentScenarioSpan.innerText = currentScenario;
+
+          // Display user's reply as a chat message
+          const userMessageDiv = document.createElement("div");
+          userMessageDiv.classList.add("chat-message", "user-message");
+          userMessageDiv.innerText = userReply;
+          chatContainer.appendChild(userMessageDiv);
+          scrollToBottom();
+
+          // Evaluate user response before generating the next expression
+          evaluateUserResponse(userReply);
         }
       });
 
@@ -332,5 +388,6 @@
         });
       });
     </script>
+
   </body>
 </html>

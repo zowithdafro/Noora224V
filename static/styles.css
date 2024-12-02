@@ -451,22 +451,27 @@ main {
 
 /* User message specific styling */
 .user-message {
-  background-color: #000000;
-  color: #ffffff;
-  border-radius: 30px;
-  padding: 20px 30px;
-  margin-bottom: 10px;
-  width: fit-content; /* Ensure width adjusts to content */
-  max-width: 75%; /* Keep maximum width constraint */
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  transform-style: preserve-3d;
-  margin-left: auto; /* Keep right alignment */
-  text-align: left; /* Change to left align for better readability */
-  font-size: 16px;
-  line-height: 1.4;
-  display: inline-block; /* Help with width calculation */
+  background-color: #000000; /* Dark background for the user's message */
+  color: #ffffff; /* White text for contrast */
+  border-radius: 30px; /* Rounded corners */
+  padding: 20px 30px; /* Spacing inside the bubble for readability */
+  margin-bottom: 10px; /* Space between each message */
+  width: fit-content; /* Adjust width based on content */
+  max-width: 75%; /* Restrict width to 75% of the container */
+  margin-left: auto; /* Align to the right */
+  text-align: left; /* Left-align text inside the bubble */
+  font-size: 16px; /* Standard readable font size */
+  line-height: 1.4; /* Line spacing for readability */
+  display: block; /* Display as a block element to better manage alignment */
+  clear: both; /* Prevent the messages from stacking or overlapping */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Add a subtle shadow for depth */
 }
+
+/* Optional: Add hover or interaction styles for a nicer user experience */
+.user-message:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+  transition: all 0.2s ease-in-out; /* Smooth transition effect */
+}
+
 
 /* Remove or comment out any .chat-message classes */

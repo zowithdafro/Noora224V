@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory,request
 from together import Together
 import random
 
@@ -115,6 +115,47 @@ def generate_expression():
         'intensity': intensity,
         'image_url': image_url
     })
+@app.route('/evaluate', methods=['POST'])
+def evaluate_response():
+    data = request.get_json()
+    user_reply = data.get('user_reply')
+    statement = data.get('statement')
+    emotion = data.get('emotion')
+    intensity = data.get('intensity')
+
+    # Construct the prompt for evaluation
+    prompt = f"""
+    Statement: "{statement}"
+    Emotion: {emotion}
+    Intensity: {intensity}
+
+    User's Response: "{user_reply}"
+
+    Evaluate if the user's response is correct given the context of the facial expression (emotion and intensity) and the ambiguous statement. Provide a one-sentence evaluation of whether the response is correct or incorrect, and if incorrect, suggest what it should be more like.
+
+    Expected format:
+    Evaluation: [Correct/Incorrect]
+    Feedback: [Feedback sentence]
+    """
+
+    # Use Together AI to evaluate the response
+    response = client.chat.completions.create(
+        model="meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    # Parse the response
+    message_content = response.choices[0].message.content.strip()
+    evaluation_lines = message_content.split("\n")
+    evaluation = {}
+    for line in evaluation_lines:
+        if line.startswith("Evaluation:"):
+            evaluation['evaluation'] = line.replace("Evaluation:", "").strip()
+        elif line.startswith("Feedback:"):
+            evaluation['feedback'] = line.replace("Feedback:", "").strip()
+
+    return jsonify(evaluation)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
