@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Noora</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Navigation Bar -->
+      <header>
+        <!-- App Branding -->
+        <div class="header-left">
+          <img src="assets/lamp.PNG" alt="Lamp Icon" class="flame-icon" />
+          <div class="noora-text">
+            <div class="noora-title">NOORA</div>
+            <div class="noora-subtitle">
+              Stanford University Open Virtual Assistant Lab
+            </div>
+          </div>
+        </div>
+        <!-- Navigation Controls -->
+        <div class="header-right">
+          <button class="facial-expressions-btn">
+            Facial Expressions
+            <i class="fa-solid fa-angle-down"></i>
+          </button>
+          <button class="profile-button">
+            <i class="fa-solid fa-user"></i>
+            Mihir
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <!-- Sidebar Menu -->
+        <div class="left-column">
+          <!-- Timer Display -->
+          <div class="time-taken">
+            <div class="time-label">
+              <i class="fa-solid fa-clock clock-icon"></i>
+              <span>Time Taken</span>
+            </div>
+            <div class="timer">01 : 23</div>
+          </div>
+          <!-- Progress Tracker -->
+          <div class="progress-section">
+            <div class="progress-label">
+              <i class="fa-solid fa-chart-simple progress-icon"></i>
+              <span>Progress</span>
+            </div>
+            <div class="progress-circles">
+              <div class="circle filled"></div>
+              <div class="circle filled"></div>
+              <div class="circle filled"></div>
+              <div class="circle filled"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+          </div>
+          <!-- Score Display -->
+          <div class="counts-container">
+            <div class="count-item">
+              <div class="count-number">
+                <span class="big-number">0</span
+                ><span class="small-number">/10</span>
+              </div>
+              <div class="count-label">scenarios</div>
+            </div>
+            <div class="count-item">
+              <div class="count-number">
+                <span class="big-number">0</span
+                ><span class="small-number">/10</span>
+              </div>
+              <div class="count-label">correct</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="right-column">
+          <!-- Welcome Message -->
+          <div class="instruction-box">
+            <p>
+              Hi there, I'm Noora! Let's practice responding to people in the
+              following 10 situations. I'll show you a facial expression, and
+              you respond with what you would say.
+            </p>
+            <p><strong>Here's the first one!</strong></p>
+          </div>
+          <!-- Expression Display -->
+          <div class="facial-expression">
+            <div class="expression-container">
+              <img
+                src="assets/angry.png"
+                alt="Facial Expression"
+                class="expression-image"
+              />
+              <div class="expression-statement">
+                <em>"What did you mean by that?"</em>
+              </div>
+            </div>
+          </div>
+          <!-- Input Area -->
+          <div class="blur-background"></div>
+          <div class="reply-section">
+            <i
+              class="fa-solid fa-comment"
+              style="font-size: 20px; color: #666"
+            ></i>
+            <input type="text" placeholder="Reply back" class="reply-input" />
+            <button class="scroll-top">
+              <i class="fa-solid fa-circle-arrow-up"></i>
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      function updateScenarioCount() {
+        const filledCircles =
+          document.querySelectorAll(".circle.filled").length;
+        const scenarioNumber = document.querySelector(
+          ".count-item:first-child .big-number"
+        );
+        scenarioNumber.textContent = filledCircles;
+      }
+
+      // Initial count
+      updateScenarioCount();
+
+      // Add observer to watch for changes in circles
+      const observer = new MutationObserver(updateScenarioCount);
+      const circlesContainer = document.querySelector(".progress-circles");
+      observer.observe(circlesContainer, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    </script>
+  </body>
+</html>
