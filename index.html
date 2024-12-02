@@ -124,7 +124,7 @@
         <div class="right-column">
           <!-- Chat Container -->
           <div class="chat-container" id="chat-container">
-            <div class="chat-message noora-message">
+            <div class="instruction-box">
               <p>
                 Hi there, I'm Noora! Let's practice responding to people in the
                 following 20 situations. I'll show you a facial expression, and
@@ -132,8 +132,14 @@
               </p>
             </div>
           </div>
+          <!-- Add blur background -->
+          <div class="blur-background"></div>
           <!-- Input Area -->
           <div class="reply-section">
+            <i
+              class="fa-solid fa-comment"
+              style="font-size: 20px; color: #666"
+            ></i>
             <input
               type="text"
               placeholder="Reply back"
@@ -173,6 +179,11 @@
         }, 1000);
       };
 
+      // Helper function to scroll to the bottom of the chat container
+      const scrollToBottom = () => {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      };
+
       // Function to generate the next facial expression
       const generateExpression = async (userReply = "") => {
         if (userReply) {
@@ -185,6 +196,7 @@
           userMessageDiv.classList.add("chat-message", "user-message");
           userMessageDiv.innerText = userReply;
           chatContainer.appendChild(userMessageDiv);
+          scrollToBottom(); // Scroll after user message
 
           // Determine if answer is correct and update progress
           const isCorrect = Math.random() < 0.5;
@@ -214,31 +226,31 @@
           // Remove the loading message
           loadingMessageDiv.remove();
 
-          // Display the ambiguous statement
-          const nooraMessageDiv = document.createElement("div");
-          nooraMessageDiv.classList.add("chat-message", "noora-message");
-          nooraMessageDiv.innerHTML = `<em>"${data.statement}"</em>`;
+          // Display the ambiguous statement and image in a single container
+          const expressionContainer = document.createElement("div");
+          expressionContainer.classList.add("expression-container");
 
-          // Append Noora's response to the chat
-          chatContainer.appendChild(nooraMessageDiv);
-          chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom after adding Noora's text
-
-          // Display the generated facial expression (image)
           if (data.image_url) {
             const imageElement = document.createElement("img");
             imageElement.src = data.image_url;
             imageElement.alt = "Facial Expression";
-            imageElement.classList.add("chat-image");
-            chatContainer.appendChild(imageElement);
-
-            // Scroll to the most recent image after it is appended
-            setTimeout(() => {
-              imageElement.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            }, 100);
+            imageElement.classList.add("expression-image");
+            expressionContainer.appendChild(imageElement);
           }
+
+          const statementDiv = document.createElement("div");
+          statementDiv.classList.add("expression-statement");
+          statementDiv.innerHTML = `<em>"${data.statement}"</em>`;
+          expressionContainer.appendChild(statementDiv);
+
+          // Create a wrapper for the facial expression
+          const facialExpressionDiv = document.createElement("div");
+          facialExpressionDiv.classList.add("facial-expression");
+          facialExpressionDiv.appendChild(expressionContainer);
+
+          // Append to chat container
+          chatContainer.appendChild(facialExpressionDiv);
+          scrollToBottom(); // Scroll after Noora's response
         } catch (error) {
           loadingMessageDiv.innerText = "An error occurred. Please try again!";
         } finally {

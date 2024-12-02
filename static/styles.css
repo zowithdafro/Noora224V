@@ -227,30 +227,32 @@ main {
 .right-column {
   flex-grow: 1;
   background-color: #ffffff;
-  padding: 20px;
+  padding: 20px 20px 120px 20px; /* Increased bottom padding to account for reply bar */
   overflow: auto;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 100px); /* Subtract header height */
 }
 
+/* Separate instruction box styling */
 .instruction-box {
   background-color: #ffa500;
   border-radius: 30px;
   padding: 20px;
   margin-bottom: 10px;
-  width: 75%;
+  width: fit-content; /* Change from fixed width to fit-content */
+  max-width: 75%; /* Keep maximum width constraint */
+  position: relative;
+  transition: all 0.2s ease;
+  transform-style: preserve-3d;
 }
 
 .instruction-box p {
   margin: 0;
   font-size: 16px;
   line-height: 1.4;
-}
-
-.instruction-box p:last-child {
-  font-weight: bold;
-  font-size: 18px;
-  margin-top: 10px;
+  text-align: left;
+  color: #000000;
 }
 
 .expression-container {
@@ -258,10 +260,12 @@ main {
   border-radius: 30px;
   padding: 20px;
   width: fit-content;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
+  transition: all 0.2s ease;
+  transform-style: preserve-3d;
 }
 
 .expression-image {
@@ -276,6 +280,11 @@ main {
   font-style: italic;
   text-align: center;
   padding: 0 10px;
+}
+
+.expression-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .blur-background {
@@ -304,6 +313,8 @@ main {
   gap: 15px;
   z-index: 100;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  transform-style: preserve-3d;
 }
 
 .reply-input {
@@ -335,88 +346,18 @@ main {
   font-size: 35px;
   color: #000000;
 }
-/* Updated styling for chat layout */
+
+/* Chat container spacing */
 .chat-container {
-  max-height: 500px;
+  flex-grow: 1;
   overflow-y: auto;
   padding: 10px;
   margin-bottom: 20px;
-}
-
-.chat-message {
-  margin: 15px 0;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.chat-message:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.noora-message,
-.user-message {
-  max-width: 80%;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.noora-message {
-  background-color: #f5a623; /* Same yellow as the button */
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.user-message {
-  background-color: #000000; /* Black for user */
-  color: white;
-  margin-left: auto;
-  margin-bottom: 10px;
-}
-
-.chat-image {
-  width: 300px;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease;
-}
-
-.chat-image:hover {
-  transform: scale(1.05);
-}
-
-.time-taken {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.reply-section {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-}
-
-.reply-input {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
-}
-
-.submit-btn {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
+  gap: 10px;
+  height: 100%; /* Take full height of parent */
 }
 
 .version {
@@ -503,3 +444,29 @@ main {
 .module-dropdown.active .facial-expressions-btn i {
   transform: rotate(180deg);
 }
+
+.facial-expression {
+  margin: 20px 0;
+}
+
+/* User message specific styling */
+.user-message {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 20px 30px;
+  margin-bottom: 10px;
+  width: fit-content; /* Ensure width adjusts to content */
+  max-width: 75%; /* Keep maximum width constraint */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  transform-style: preserve-3d;
+  margin-left: auto; /* Keep right alignment */
+  text-align: left; /* Change to left align for better readability */
+  font-size: 16px;
+  line-height: 1.4;
+  display: inline-block; /* Help with width calculation */
+}
+
+/* Remove or comment out any .chat-message classes */
