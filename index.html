@@ -357,6 +357,14 @@
         }
       });
 
+      // Add enter key support for submitting replies
+      replyInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter" && replyInput.value.trim() !== "") {
+          event.preventDefault(); // Prevent default enter key behavior
+          submitBtn.click(); // Trigger submit button click
+        }
+      });
+
       // Load the first facial expression when the page loads
       window.addEventListener("load", () => {
         startTimer(); // Start the timer from 0

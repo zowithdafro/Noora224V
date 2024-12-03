@@ -239,7 +239,7 @@ main {
   background-color: #ffa500;
   border-radius: 30px;
   padding: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Reduced from 10px */
   width: fit-content; /* Change from fixed width to fit-content */
   max-width: 75%; /* Keep maximum width constraint */
   position: relative;
@@ -262,7 +262,7 @@ main {
   width: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px; /* Reduced from 15px */
   position: relative;
   transition: all 0.2s ease;
   transform-style: preserve-3d;
@@ -356,7 +356,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px; /* Reduced from 10px */
   height: 100%; /* Take full height of parent */
 }
 
@@ -448,7 +448,7 @@ main {
 }
 
 .facial-expression {
-  margin: 20px 0;
+  margin: 8px 0; /* Reduced from 20px */
 }
 
 /* User message specific styling */
@@ -457,7 +457,7 @@ main {
   color: #ffffff; /* White text for contrast */
   border-radius: 30px; /* Rounded corners */
   padding: 10px 20px; /* Spacing inside the bubble for readability */
-  margin-bottom: 10px; /* Space between each message */
+  margin-bottom: 8px; /* Reduced from 10px */
   width: fit-content; /* Adjust width based on content */
   max-width: 75%; /* Restrict width to 75% of the container */
   margin-left: auto; /* Align to the right */
