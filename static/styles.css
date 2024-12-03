@@ -490,3 +490,48 @@ main {
   color: #000000;
   transform: translateY(-4px);
 }
+
+.expression-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.expression-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.expression-statement {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.emotion-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.emotion-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.emotion-button:hover {
+    background-color: #ddd;
+}
+
+.emotion-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

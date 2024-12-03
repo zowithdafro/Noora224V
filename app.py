@@ -17,6 +17,67 @@ people_folders = [os.path.join(FACE_IMAGES_FOLDER, folder) for folder in os.list
 emotions = ["happy", "sad", "surprise", "anxious", "disgust", "angry", "contentment"]
 intensities = [0.1 * i for i in range(1, 11)]  # 0.1, 0.2, ..., 1.0
 
+# Predefined list of statements, emotions, and intensities
+predefined_statements = [
+    ("Do you know what time it is?", [
+        ("angry", 1.0, "You are running late to a meeting."),
+        ("happy", 0.9, "You see someone who does not have a watch.")
+    ]),
+    ("What are you doing?", [
+        ("angry", 1.0, "You accidentally picked up someone else’s phone."),
+        ("contentment", 0.8, "You are building a cool project, and a friend sees.")
+    ]),
+    ("Why are you here?", [
+        ("contentment", 0.7, "Your friend runs into you at the mall."),
+        ("disgust", 0.9, "You are at the school dance, and a bully comes by.")
+    ]),
+    ("What did you do?", [
+        ("angry", 1.0, "You spilled juice on the floor."),
+        ("happy", 0.8, "You made something cool for your final project, and someone asks about it.")
+    ]),
+    ("What’s that smell?", [
+        ("disgust", 0.9, "There is a bad smell in the air."),
+        ("happy", 0.7, "Your parent just baked cookies.")
+    ]),
+    ("Are you wearing that?", [
+        ("disgust", 0.7, "You are wearing your favorite outfit to the dance, and your classmate comes by."),
+        ("contentment", 0.9, "Your friend is wondering how they should dress for the recital, and you have on your outfit.")
+    ]),
+    ("You really outdid yourself this time.", [
+        ("happy", 0.9, "You got an A+ on an assignment."),
+        ("angry", 1.0, "You messed up the group project.")
+    ]),
+    ("I did not know this would happen", [
+        ("sad", 0.8, "Your friend heard bad news."),
+        ("surprise", 1.0, "Your friend heard shocking news.")
+    ]),
+    ("Come here", [
+        ("happy", 1.0, "Your sibling wants to show you something awesome."),
+        ("angry", 0.8, "Your parent saw that you didn’t wash the dishes.")
+    ]),
+    ("I didn’t expect to see you here", [
+        ("surprise", 0.8, "You are on vacation in another country and see your friend randomly."),
+        ("angry", 1.0, "You went to a group hangout, and someone you barely know approaches.")
+    ])
+]
+
+def generate_statements_from_list():
+    formatted_statements = []
+    for statement, emotion_pairs in predefined_statements:
+        for emotion, intensity, context in emotion_pairs:
+            formatted_statements.append({
+                "Statement": statement,
+                "Emotion": emotion.capitalize(),
+                "Intensity": round(intensity, 1),
+                "Context": context
+            })
+    return formatted_statements
+
+statements_and_emotions = generate_statements_from_list()
+current_index = 0
+
+
+
 # Generate 20 ambiguous statements with emotion and intensity
 def generate_multiple_statements_and_emotions():
     prompt = """
@@ -68,9 +129,10 @@ def generate_multiple_statements_and_emotions():
     return statements_and_emotions
 
 # Preload statements and emotions
+'''
 statements_and_emotions = generate_multiple_statements_and_emotions()
 current_index = 0
-
+'''
 def get_image_path(emotion, intensity):
     person_folder = random.choice(people_folders)
     file_name = f"{emotion.lower()}_intensity_{intensity:.1f}.png"  # Ensure file name is lowercase
@@ -98,45 +160,69 @@ def serve_faces(filename):
 @app.route('/generate', methods=['GET'])
 def generate_expression():
     global current_index
-    statement, emotion, intensity = statements_and_emotions[current_index]
+    statement_data = predefined_statements[current_index]
+    statement = statement_data[0]
+    emotions_and_intensities = statement_data[1]
+
+    # Extract emotions and their intensities
+    emotions = [item[0] for item in emotions_and_intensities]
+    emotion = emotions_and_intensities[0][0]  # Correct emotion
+    intensity = emotions_and_intensities[0][1]  # Correct intensity
+    context = emotions_and_intensities[0][2]
+
     image_path = get_image_path(emotion, intensity)
-    
     if image_path:
         relative_path = os.path.relpath(image_path, FACE_IMAGES_FOLDER)
         image_url = f"/faces/{relative_path}"
     else:
         image_url = None
 
-    current_index = (current_index + 1) % len(statements_and_emotions)
+    # Update the index for the next statement
+    current_index = (current_index + 1) % len(predefined_statements)
 
     return jsonify({
         'statement': statement,
-        'emotion': emotion,
+        'image_url': image_url,
+        'emotions': emotions,
+        'correct_emotion': emotion,
         'intensity': intensity,
-        'image_url': image_url
+        'context': context
     })
+
+
+
 @app.route('/evaluate', methods=['POST'])
 def evaluate_response():
     data = request.get_json()
     user_reply = data.get('user_reply')
     statement = data.get('statement')
-    emotion = data.get('emotion')
+    
+    print(statement)
+    emotion = data.get('correct_emotion')
     intensity = data.get('intensity')
+    context = data.get('context')
 
     # Construct the prompt for evaluation
     prompt = f"""
-    Statement: "{statement}"
-    Emotion: {emotion}
-    Intensity: {intensity}
+        Statement: "{statement}"
+        Emotion: {emotion}
+        Intensity: {intensity}
+        Context: "{context}"
 
-    User's Response: "{user_reply}"
+        User's Response: "{user_reply}"
 
-    Evaluate if the user's response is correct given the context of the facial expression (emotion and intensity) and the ambiguous statement. Provide a one-sentence evaluation of whether the response is correct or incorrect, and if incorrect, suggest what it should be more like.
+        Task:
+        1. Evaluate whether the user's response aligns with the intended emotion, tone, and context of the statement.
+        2. Avoid suggesting responses that are rude, aggressive, or disrespectful. Instead, focus on examples that maintain a calm, respectful tone while reflecting the emotion and context.
+        3. If the response generally aligns, mark it as "Correct" and suggest how it could better fit the tone while remaining respectful.
+        4. If the response does not align at all, mark it as "Incorrect" and suggest a respectful response that matches the tone and context.
 
-    Expected format:
-    Evaluation: [Correct/Incorrect]
-    Feedback: [Feedback sentence]
-    """
+        Expected format:
+        Evaluation: [Correct/Incorrect]
+        Feedback: [Detailed feedback sentence that encourages a more effective and respectful response.]
+        """
+
+
 
     # Use Together AI to evaluate the response
     response = client.chat.completions.create(
