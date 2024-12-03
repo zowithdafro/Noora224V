@@ -167,6 +167,7 @@
       let timerInterval;
       let currentScenario = 0;
       let correctCount = 0;
+      let hasUserInteracted = false;
 
       // Function to start the timer
       const startTimer = () => {
@@ -183,7 +184,16 @@
 
       // Helper function to scroll to the bottom of the chat container
       const scrollToBottom = () => {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        if (hasUserInteracted) {
+          // Scroll chat container
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+
+          // Scroll window to bottom
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          });
+        }
       };
 
       // Function to generate the next facial expression
@@ -340,6 +350,7 @@
       // Event listener for the submit button
       submitBtn.addEventListener("click", () => {
         if (replyInput.value.trim() !== "") {
+          hasUserInteracted = true; // Set to true on first user interaction
           const userReply = replyInput.value.trim();
           replyInput.value = "";
           currentScenario++;
