@@ -55,7 +55,7 @@ header {
 .noora-subtitle {
   font-size: 14px;
   font-weight: 400;
-  color: #808080;
+  color: #000000;
   margin-top: 5px;
 }
 
@@ -361,14 +361,16 @@ main {
 }
 
 .version {
-  font-size: 18px;
-  color: #808080;
+  font-size: 35px;
+  color: #000000;
+  font-weight: 200;
 }
 
 .stanford-logo {
   height: 16px;
   margin-right: 5px;
   vertical-align: middle;
+  transform: translateY(-1px);
 }
 
 .module-dropdown {
@@ -396,7 +398,7 @@ main {
 }
 
 .module-dropdown.active .module-list {
-  max-height: 400px;
+  max-height: 700px;
   opacity: 1;
   pointer-events: all;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -454,7 +456,7 @@ main {
   background-color: #000000; /* Dark background for the user's message */
   color: #ffffff; /* White text for contrast */
   border-radius: 30px; /* Rounded corners */
-  padding: 20px 30px; /* Spacing inside the bubble for readability */
+  padding: 10px 20px; /* Spacing inside the bubble for readability */
   margin-bottom: 10px; /* Space between each message */
   width: fit-content; /* Adjust width based on content */
   max-width: 75%; /* Restrict width to 75% of the container */
@@ -473,5 +475,18 @@ main {
   transition: all 0.2s ease-in-out; /* Smooth transition effect */
 }
 
-
 /* Remove or comment out any .chat-message classes */
+
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.lab-title {
+  display: inline-flex;
+  margin-left: -4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+  transform: translateY(-4px);
+}

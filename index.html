@@ -26,12 +26,14 @@
               <span>NOORA</span><span class="version"> 2.0</span>
             </div>
             <div class="noora-subtitle">
-              <img
-                src="static/assets/stanford.png"
-                alt="Stanford Logo"
-                class="stanford-logo"
-              />
-              Open Virtual Assistant Lab
+              <div class="logo-container">
+                <img
+                  src="static/assets/stanford.png"
+                  alt="Stanford Logo"
+                  class="stanford-logo"
+                />
+              </div>
+              <div class="lab-title">Open Virtual Assistant Lab</div>
             </div>
           </div>
         </div>
@@ -239,26 +241,26 @@
           submitBtn.disabled = false;
         }
       };
-        // Function to update progress circles
-        const updateProgressCircles = (isCorrect) => {
-          const circles = document.querySelectorAll(".progress-circles .circle");
-          const currentIndex = currentScenario - 1; // Use currentScenario to get the correct circle
+      // Function to update progress circles
+      const updateProgressCircles = (isCorrect) => {
+        const circles = document.querySelectorAll(".progress-circles .circle");
+        const currentIndex = currentScenario - 1; // Use currentScenario to get the correct circle
 
-          if (currentIndex >= 0 && currentIndex < circles.length) {
-            const currentCircle = circles[currentIndex];
-            
-            // Remove any previous styles to ensure the circle is updated correctly
-            currentCircle.classList.remove("correct", "incorrect");
+        if (currentIndex >= 0 && currentIndex < circles.length) {
+          const currentCircle = circles[currentIndex];
 
-            if (isCorrect) {
-              currentCircle.classList.add("correct");
-              currentCircle.style.backgroundColor = "#00cc66"; // Green for correct responses
-            } else {
-              currentCircle.classList.add("incorrect");
-              currentCircle.style.backgroundColor = "#ff3333"; // Red for incorrect responses
-            }
+          // Remove any previous styles to ensure the circle is updated correctly
+          currentCircle.classList.remove("correct", "incorrect");
+
+          if (isCorrect) {
+            currentCircle.classList.add("correct");
+            currentCircle.style.backgroundColor = "#00cc66"; // Green for correct responses
+          } else {
+            currentCircle.classList.add("incorrect");
+            currentCircle.style.backgroundColor = "#ff3333"; // Red for incorrect responses
           }
-        };
+        }
+      };
       const evaluateUserResponse = async (userReply) => {
         if (!window.currentExpression) return;
 
@@ -267,7 +269,8 @@
         // Create a loading message for evaluation
         const loadingMessageDiv = document.createElement("div");
         loadingMessageDiv.classList.add("chat-message", "noora-message");
-        loadingMessageDiv.innerText = "Evaluating your response... Please wait.";
+        loadingMessageDiv.innerText =
+          "Evaluating your response... Please wait.";
         chatContainer.appendChild(loadingMessageDiv);
         scrollToBottom();
 
@@ -319,7 +322,9 @@
             updateProgressCircles(isCorrect);
           } else {
             // If the response is not in the expected format
-            throw new Error("Invalid response format received from evaluation.");
+            throw new Error(
+              "Invalid response format received from evaluation."
+            );
           }
         } catch (error) {
           // Remove the loading message
@@ -331,7 +336,6 @@
           generateExpression();
         }
       };
-
 
       // Event listener for the submit button
       submitBtn.addEventListener("click", () => {
@@ -388,6 +392,5 @@
         });
       });
     </script>
-
   </body>
 </html>
