@@ -17,8 +17,8 @@ Noora 2.0 is a conversational social skills training application enhanced with h
 ## Installation
 1. Clone this repository:
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/zowithdafro/Noora224V
+    cd Noora224V
     ```
    
 2. Install necessary dependencies:
