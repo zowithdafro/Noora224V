@@ -5,19 +5,16 @@ import random
 
 app = Flask(__name__)
 
-# Initialize the Together AI client
-TOGETHER_AI_API_KEY = '9cc99ec381bfed2471cc8178412207194aa0001f8ba0517a84b6a7ab31e2a1ce'  # Replace with your actual API key
+TOGETHER_AI_API_KEY = '9cc99ec381bfed2471cc8178412207194aa0001f8ba0517a84b6a7ab31e2a1ce'
 client = Together(api_key=TOGETHER_AI_API_KEY)
 
-# Path to the 'faces' folder in the same directory as app.py
+
 FACE_IMAGES_FOLDER = "./faces"
 people_folders = [os.path.join(FACE_IMAGES_FOLDER, folder) for folder in os.listdir(FACE_IMAGES_FOLDER) if os.path.isdir(os.path.join(FACE_IMAGES_FOLDER, folder))]
 
-# Emotions and intensities
 emotions = ["happy", "sad", "surprise", "anxious", "disgust", "angry", "contentment"]
-intensities = [0.1 * i for i in range(1, 11)]  # 0.1, 0.2, ..., 1.0
+intensities = [0.1 * i for i in range(1, 11)] 
 
-# Predefined list of statements, emotions, and intensities
 predefined_statements = [
     ("Do you know what time it is?", [
         ("angry", 1.0, "You are running late to a meeting."),
@@ -76,9 +73,6 @@ def generate_statements_from_list():
 statements_and_emotions = generate_statements_from_list()
 current_index = 0
 
-
-
-# Generate 20 ambiguous statements with emotion and intensity
 def generate_multiple_statements_and_emotions():
     prompt = """
     Generate 20 ambiguous statements that could be interpreted as either positive, negative, or neutral depending on the emotional tone and context.
@@ -108,13 +102,11 @@ def generate_multiple_statements_and_emotions():
 
     Ensure there are 20 such pairs.
     """
-    # Generate statements using Together AI
     response = client.chat.completions.create(
         model="meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    # Parse the response
     message_content = response.choices[0].message.content.strip()
     statements_and_emotions = []
     output_text = message_content.split("\n\n")
@@ -128,22 +120,20 @@ def generate_multiple_statements_and_emotions():
 
     return statements_and_emotions
 
-# Preload statements and emotions
 '''
 statements_and_emotions = generate_multiple_statements_and_emotions()
 current_index = 0
 '''
 def get_image_path(emotion, intensity):
     person_folder = random.choice(people_folders)
-    file_name = f"{emotion.lower()}_intensity_{intensity:.1f}.png"  # Ensure file name is lowercase
+    file_name = f"{emotion.lower()}_intensity_{intensity:.1f}.png"
 
-    # Search for the matching file
     for root, _, files in os.walk(person_folder):
-        files_lowercase = [f.lower() for f in files]  # Ensure files are checked in lowercase
+        files_lowercase = [f.lower() for f in files] 
         if file_name in files_lowercase:
             full_path = os.path.join(root, files[files_lowercase.index(file_name)])
             return full_path
-    return None  # Return None if no matching file is found
+    return None 
 
 @app.route('/')
 def index():
@@ -164,10 +154,9 @@ def generate_expression():
     statement = statement_data[0]
     emotions_and_intensities = statement_data[1]
 
-    # Extract emotions and their intensities
     emotions = [item[0] for item in emotions_and_intensities]
-    emotion = emotions_and_intensities[0][0]  # Correct emotion
-    intensity = emotions_and_intensities[0][1]  # Correct intensity
+    emotion = emotions_and_intensities[0][0] 
+    intensity = emotions_and_intensities[0][1] 
     context = emotions_and_intensities[0][2]
 
     image_path = get_image_path(emotion, intensity)
@@ -177,7 +166,6 @@ def generate_expression():
     else:
         image_url = None
 
-    # Update the index for the next statement
     current_index = (current_index + 1) % len(predefined_statements)
 
     return jsonify({
@@ -202,7 +190,6 @@ def evaluate_response():
     intensity = data.get('intensity')
     context = data.get('context')
 
-    # Construct the prompt for evaluation
     prompt = f"""
         Statement: "{statement}"
         Emotion: {emotion}
@@ -222,15 +209,11 @@ def evaluate_response():
         Feedback: [Detailed feedback sentence that encourages a more effective and respectful response.]
         """
 
-
-
-    # Use Together AI to evaluate the response
     response = client.chat.completions.create(
         model="meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    # Parse the response
     message_content = response.choices[0].message.content.strip()
     evaluation_lines = message_content.split("\n")
     evaluation = {}
