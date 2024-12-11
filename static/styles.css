@@ -179,11 +179,11 @@ main {
 }
 
 .circle.filled.correct {
-  background-color: #2ecc71; /* green */
+  background-color: #2ecc71;
 }
 
 .circle.filled.incorrect {
-  background-color: #e74c3c; /* dark red */
+  background-color: #e74c3c;
 }
 
 .counts-container {
@@ -227,21 +227,20 @@ main {
 .right-column {
   flex-grow: 1;
   background-color: #ffffff;
-  padding: 20px 20px 120px 20px; /* Increased bottom padding to account for reply bar */
+  padding: 20px 20px 120px 20px;
   overflow: auto;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 100px); /* Subtract header height */
+  height: calc(100vh - 100px);
 }
 
-/* Separate instruction box styling */
 .instruction-box {
   background-color: #ffa500;
   border-radius: 30px;
   padding: 20px;
-  margin-bottom: 8px; /* Reduced from 10px */
-  width: fit-content; /* Change from fixed width to fit-content */
-  max-width: 75%; /* Keep maximum width constraint */
+  margin-bottom: 8px;
+  width: fit-content;
+  max-width: 75%;
   position: relative;
   transition: all 0.2s ease;
   transform-style: preserve-3d;
@@ -262,7 +261,7 @@ main {
   width: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Reduced from 15px */
+  gap: 10px;
   position: relative;
   transition: all 0.2s ease;
   transform-style: preserve-3d;
@@ -347,7 +346,6 @@ main {
   color: #000000;
 }
 
-/* Chat container spacing */
 .chat-container {
   flex-grow: 1;
   overflow-y: auto;
@@ -356,8 +354,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px; /* Reduced from 10px */
-  height: 100%; /* Take full height of parent */
+  gap: 8px;
+  height: 100%;
 }
 
 .version {
@@ -377,7 +375,6 @@ main {
   position: relative;
 }
 
-/* Update the module-list styles in styles.css */
 .module-list {
   position: absolute;
   top: 100%;
@@ -411,7 +408,7 @@ main {
 }
 
 .module-item:hover {
-  background-color: #ffb224; /* Slightly lighter than button color */
+  background-color: #ffb224;
 }
 
 @keyframes fadeIn {
@@ -448,34 +445,30 @@ main {
 }
 
 .facial-expression {
-  margin: 8px 0; /* Reduced from 20px */
+  margin: 8px 0;
 }
 
-/* User message specific styling */
 .user-message {
-  background-color: #000000; /* Dark background for the user's message */
-  color: #ffffff; /* White text for contrast */
-  border-radius: 30px; /* Rounded corners */
-  padding: 10px 20px; /* Spacing inside the bubble for readability */
-  margin-bottom: 8px; /* Reduced from 10px */
-  width: fit-content; /* Adjust width based on content */
-  max-width: 75%; /* Restrict width to 75% of the container */
-  margin-left: auto; /* Align to the right */
-  text-align: left; /* Left-align text inside the bubble */
-  font-size: 16px; /* Standard readable font size */
-  line-height: 1.4; /* Line spacing for readability */
-  display: block; /* Display as a block element to better manage alignment */
-  clear: both; /* Prevent the messages from stacking or overlapping */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Add a subtle shadow for depth */
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin-bottom: 8px;
+  width: fit-content;
+  max-width: 75%;
+  margin-left: auto;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  clear: both;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Optional: Add hover or interaction styles for a nicer user experience */
 .user-message:hover {
-  transform: translateY(-3px); /* Slight lift on hover */
-  transition: all 0.2s ease-in-out; /* Smooth transition effect */
+  transform: translateY(-3px);
+  transition: all 0.2s ease-in-out;
 }
-
-/* Remove or comment out any .chat-message classes */
 
 .logo-container {
   display: inline-flex;
@@ -492,46 +485,46 @@ main {
 }
 
 .expression-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .expression-image {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-bottom: 10px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .expression-statement {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+  font-size: 1.2em;
+  margin-bottom: 10px;
 }
 
 .emotion-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .emotion-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .emotion-button:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 .emotion-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
